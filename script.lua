@@ -1,4 +1,5 @@
 -- Variável para controlar se o script está ativado ou desativado
+print("Loading..")
 local ativo = true
 
 -- Função para processar os comandos
@@ -8,6 +9,7 @@ local function processarComando(comando)
     end
 
     if comando == "Direita volver" then
+        print("Direita volver!")
         -- Mover o jogador para a direita
         game.Players.LocalPlayer.Character:Move(Vector3.new(1, 0, 0))
     elseif comando == "Esquerda volver" then
@@ -17,7 +19,13 @@ local function processarComando(comando)
 end
 
 -- Conectar a função ao evento de chat
-game.Players.LocalPlayer.Chatted:Connect(processarComando)
+game.Players.LocalPlayer.Chatted:Connect(function(msg)
+    local lowerMsg = msg:lower()
+    if lowerMsg == "direita volver" or lowerMsg == "esquerda volver" then
+            warn("Loading..")
+        processarComando(lowerMsg)
+    end
+end)
 
 -- Criar botões de ativar e desativar
 local gui = Instance.new("ScreenGui")
@@ -40,3 +48,4 @@ desativarButton.Text = "Desativar"
 desativarButton.MouseButton1Click:Connect(function()
     ativo = false
 end)
+print("Loaded.")
