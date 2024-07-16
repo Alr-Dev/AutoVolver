@@ -1,34 +1,42 @@
-local Players = game:GetService("Players")
-local Player = Players.LocalPlayer
-local Button = script.Parent
-local isActive = false -- Variável para controlar o estado do botão
+-- Variável para controlar se o script está ativado ou desativado
+local ativo = true
 
-Button.MouseButton1Click:Connect(function()
-    local message = "Direta Volver" -- A mensagem que você quer verificar
-    local player = Player.Name -- Nome do jogador que clicou no botão
-
-    if message == "Direta Volver" then
-        -- Encontre o personagem do jogador
-        local character = Player.Character or Player.CharacterAdded:Wait()
-
-        -- Calcule a nova direção (direita)
-        local newDirection = Vector3.new(1, 0, 0)
-
-        -- Aplique a nova direção à câmera do personagem
-        character:WaitForChild("Humanoid").AutoRotate = false
-        character:WaitForChild("Humanoid").AutoRotateSpeed = 0
-        character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(character:WaitForChild("HumanoidRootPart").Position, character:WaitForChild("HumanoidRootPart").Position + newDirection)
-    elseif message == "Esquerda Volver" then
-        -- Calcule a nova direção (esquerda)
-        local newDirection = Vector3.new(-1, 0, 0)
-
-        -- Aplique a nova direção à câmera do personagem
-        character:WaitForChild("Humanoid").AutoRotate = false
-        character:WaitForChild("Humanoid").AutoRotateSpeed = 0
-        character:WaitForChild("HumanoidRootPart").CFrame = CFrame.new(character:WaitForChild("HumanoidRootPart").Position, character:WaitForChild("HumanoidRootPart").Position + newDirection)
+-- Função para processar os comandos
+local function processarComando(comando)
+    if not ativo then
+        return
     end
 
-    -- Alternar o estado do botão
-    isActive = not isActive
-    Button.Text = isActive and "Desativar" or "Ativar"
+    if comando == "Direita volver" then
+        -- Mover o jogador para a direita
+        game.Players.LocalPlayer.Character:Move(Vector3.new(1, 0, 0))
+    elseif comando == "Esquerda volver" then
+        -- Mover o jogador para a esquerda
+        game.Players.LocalPlayer.Character:Move(Vector3.new(-1, 0, 0))
+    end
+end
+
+-- Conectar a função ao evento de chat
+game.Players.LocalPlayer.Chatted:Connect(processarComando)
+
+-- Criar botões de ativar e desativar
+local gui = Instance.new("ScreenGui")
+gui.Parent = game.Players.LocalPlayer.PlayerGui
+
+local ativarButton = Instance.new("TextButton")
+ativarButton.Parent = gui
+ativarButton.Position = UDim2.new(0, 10, 0, 10)
+ativarButton.Size = UDim2.new(0, 100, 0, 30)
+ativarButton.Text = "Ativar"
+ativarButton.MouseButton1Click:Connect(function()
+    ativo = true
+end)
+
+local desativarButton = Instance.new("TextButton")
+desativarButton.Parent = gui
+desativarButton.Position = UDim2.new(0, 120, 0, 10)
+desativarButton.Size = UDim2.new(0, 100, 0, 30)
+desativarButton.Text = "Desativar"
+desativarButton.MouseButton1Click:Connect(function()
+    ativo = false
 end)
