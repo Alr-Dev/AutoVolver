@@ -1,5 +1,4 @@
 -- Variável para controlar se o script está ativado ou desativado
-print("Loading..")
 local ativo = true
 
 -- Função para processar os comandos
@@ -22,30 +21,32 @@ end
 game.Players.LocalPlayer.Chatted:Connect(function(msg)
     local lowerMsg = msg:lower()
     if lowerMsg == "direita volver" or lowerMsg == "esquerda volver" then
-            warn("Loading..")
+        warn("Loading..")
         processarComando(lowerMsg)
     end
 end)
 
--- Criar botões de ativar e desativar
-local gui = Instance.new("ScreenGui")
-gui.Parent = game.Players.LocalPlayer.PlayerGui
+-- Criar tela de carregamento
+local loadingScreen = Instance.new("ScreenGui")
+loadingScreen.Name = "LoadingScreen"
+loadingScreen.Parent = game.Players.LocalPlayer.PlayerGui
 
-local ativarButton = Instance.new("TextButton")
-ativarButton.Parent = gui
-ativarButton.Position = UDim2.new(0, 10, 0, 10)
-ativarButton.Size = UDim2.new(0, 100, 0, 30)
-ativarButton.Text = "Ativar"
-ativarButton.MouseButton1Click:Connect(function()
-    ativo = true
-end)
+local background = Instance.new("Frame")
+background.Name = "Background"
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+background.BackgroundTransparency = 0.5
+background.Parent = loadingScreen
 
-local desativarButton = Instance.new("TextButton")
-desativarButton.Parent = gui
-desativarButton.Position = UDim2.new(0, 120, 0, 10)
-desativarButton.Size = UDim2.new(0, 100, 0, 30)
-desativarButton.Text = "Desativar"
-desativarButton.MouseButton1Click:Connect(function()
-    ativo = false
-end)
+local loadingText = Instance.new("TextLabel")
+loadingText.Name = "LoadingText"
+loadingText.Size = UDim2.new(0, 200, 0, 30)
+loadingText.Position = UDim2.new(0.5, -100, 0.5, -15)
+loadingText.AnchorPoint = Vector2.new(0.5, 0.5)
+loadingText.Text = "Loading.."
+loadingText.Font = Enum.Font.SourceSans
+loadingText.TextSize = 24
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadingText.Parent = background
+
 print("Loaded.")
